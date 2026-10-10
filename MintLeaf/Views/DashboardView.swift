@@ -1174,7 +1174,7 @@ struct FinTrackDashboardView: View {
                 Spacer()
                 balanceMini("Обязательства", amount: totalLiabilities, symbol: "arrow.down.right")
                 Spacer()
-                balanceMini("Изменение за период", amount: savings, symbol: "equal.circle")
+                balanceMini("Доходы − расходы", amount: savings, symbol: "equal.circle")
             }
             if multipleCurrencies {
                 Label(hasFreshRates
