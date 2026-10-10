@@ -98,18 +98,5 @@ jobs:
             FinTrack-Mac-Apple-Silicon.dmg
           if-no-files-found: error
 
-      # Keep the full derived MIT-licensed Swift sources available in the public repo.
-      # A bot push using GITHUB_TOKEN will not retrigger this workflow.
-      - name: Publish reproducible Swift sources
-        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
-        run: |
-          rsync -a --exclude='.git' --exclude='.github' --exclude='README.md' --exclude='project.yml' \
-            "$RUNNER_TEMP/mintleaf-upstream/" ./
-          cp "$RUNNER_TEMP/mintleaf-upstream/project.yml" project.yml
-          git add -A MintLeaf MintLeafTests MintLeaf.xcodeproj scripts project.yml LICENSE LOCALIZATION_REPORT_RU.md .gitignore
-          if ! git diff --cached --quiet; then
-            git config user.name 'github-actions[bot]'
-            git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-            git commit -m 'Vendor Mint Leaf MIT sources with FinTrack Russian dashboard and FX fixes'
-            git push origin HEAD:main
-          fi
+      # Derived Swift sources are version-controlled separately; CI must not push
+      # back to main, as concurrent builds would cause non-fast-forward failures.
