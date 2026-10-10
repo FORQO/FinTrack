@@ -48,7 +48,7 @@ jobs:
           d = json.loads((root / 'MintLeaf/Localizable.xcstrings').read_text())
           assert d['strings']['Overview']['localizations']['ru']['stringUnit']['value'] == 'Обзор'
           currencies = (root / 'MintLeaf/Services/SupportedCurrencies.swift').read_text()
-          block = currencies.split('static let all:',1)[1].split(']',1)[0]
+          block = currencies.split('static let all:',1)[1].split('= [',1)[1].split(']',1)[0]
           assert [line.split('code: "',1)[1].split('"',1)[0] for line in block.splitlines() if 'CurrencyInfo(code:' in line] == ['RUB', 'USD', 'EUR']
           assert (root / 'MintLeaf/Views/DashboardView.swift').read_text().count('struct FinTrackDashboardView: View') == 1
           PY
