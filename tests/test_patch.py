@@ -72,6 +72,13 @@ final class ExchangeRateService {
             'MintLeaf/Views/Transactions/ScheduledListView.swift': 'let currency = value ?? "USD"',
             'MintLeaf/Views/Transactions/SubscriptionCalendarView.swift': 'let currency = value ?? "USD"',
             'MintLeaf/Services/SampleDataGenerator.swift': 'UserDefaults.standard.set("USD", forKey: "defaultCurrency")',
+            'MintLeaf/Services/TransferService.swift': '''enum TransferService {
+        if let pairID = txn.transferPairID {
+            if let match = dest.transactions.first(where: { $0.transferPairID == pairID && $0.id != txn.id }) {
+                return match
+            }
+        }
+}''',
             'MintLeaf/Views/Components/TransactionRow.swift': 'Text(cat.name)',
             'MintLeaf/Views/ContentView.swift': 'DashboardView(onReviewDataHealth: { selection = .dataHealth })',
             'MintLeaf/Views/DashboardView.swift': 'import SwiftUI\nimport SwiftData\n\nenum DashboardCard: String { case heroBalance = "Net Worth" }',
@@ -119,6 +126,9 @@ final class ExchangeRateService {
             demo = (root / 'MintLeaf/Services/SampleDataGenerator.swift').read_text()
             self.assertNotIn('UserDefaults.standard.set("RUB", forKey: "defaultCurrency")', demo)
             self.assertNotIn('UserDefaults.standard.set("USD", forKey: "defaultCurrency")', demo)
+            transfer = (root / 'MintLeaf/Services/TransferService.swift').read_text()
+            self.assertIn('return dest.transactions.first(where:', transfer)
+            self.assertNotIn('if let match = dest.transactions.first(where:', transfer)
 
 
 if __name__ == '__main__':

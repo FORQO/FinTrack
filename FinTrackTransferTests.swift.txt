@@ -1,0 +1,39 @@
+
+@MainActor
+final class FinTrackTransferSafetyTests: XCTestCase {
+    func testPairedTransferDoesNotDeleteUnrelatedLegacyTransaction() throws {
+        let context = try XCTUnwrap(MintLeafApp.testContainer).mainContext
+        for account in try context.fetch(FetchDescriptor<Account>()) { context.delete(account) }
+        for txn in try context.fetch(FetchDescriptor<Transaction>()) { context.delete(txn) }
+        try context.save()
+
+        let source = Account(name: "Source", type: .checking, initialBalance: 500)
+        let destination = Account(name: "Destination", type: .savings, initialBalance: 200)
+        context.insert(source)
+        context.insert(destination)
+
+        let outgoing = Transaction(amount: -100, title: "Paired transfer", account: source)
+        outgoing.transferDestination = destination
+        outgoing.transferPairID = UUID()
+
+        // Same amount and date, opposite direction, but no matching pair ID.
+        let unrelated = Transaction(amount: 100, title: "Legacy transfer",
+                                    date: outgoing.date, account: destination)
+        unrelated.transferDestination = source
+        context.insert(outgoing)
+        context.insert(unrelated)
+        source.adjustBalance(by: -100)
+        destination.adjustBalance(by: 100)
+
+        XCTAssertNil(TransferService.findMirror(of: outgoing),
+                     "Missing pair must not match an unrelated legacy transaction")
+        TransferService.delete(outgoing, context: context)
+        try context.save()
+
+        let remaining = try context.fetch(FetchDescriptor<Transaction>())
+        XCTAssertEqual(remaining.count, 1)
+        XCTAssertEqual(remaining.first?.id, unrelated.id)
+        XCTAssertEqual(source.currentBalance, 500)
+        XCTAssertEqual(destination.currentBalance, 300)
+    }
+}

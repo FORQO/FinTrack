@@ -189,6 +189,27 @@ def apply(root: Path):
         return src[:before] + refresh + src[after:] + parser
     count += rewrite(service, replace_exchange_service)
 
+    # Protect paired transfers from deleting unrelated legacy transactions.
+    transfer = root / "MintLeaf/Services/TransferService.swift"
+    if transfer.is_file():
+        def protect_paired_transfer(src):
+            old = '''        if let pairID = txn.transferPairID {
+            if let match = dest.transactions.first(where: { $0.transferPairID == pairID && $0.id != txn.id }) {
+                return match
+            }
+        }'''
+            new = '''        if let pairID = txn.transferPairID {
+            // A paired transfer must never fall back to guessing its mirror:
+            // an unrelated legacy transfer may share the amount and date.
+            return dest.transactions.first(where: { $0.transferPairID == pairID && $0.id != txn.id })
+        }'''
+            if new in src:
+                return src
+            if old not in src:
+                raise RuntimeError("Unexpected transfer mirror lookup implementation")
+            return src.replace(old, new, 1)
+        count += rewrite(transfer, protect_paired_transfer)
+
     # Add regression tests to the existing, already-registered macOS test file.
     tests = root / "MintLeafTests/MoneyMathTests.swift"
     if tests.is_file():
@@ -198,6 +219,8 @@ def apply(root: Path):
                 src = "#if canImport(FoundationXML)\nimport FoundationXML\n#endif\n" + src
             return src + "\n" + (BASE / "FinTrackCurrencyTests.swift.txt").read_text(encoding="utf-8")
         count += rewrite(tests, test_changes)
+        count += rewrite(tests, lambda src: src if "class FinTrackTransferSafetyTests" in src
+            else src + "\n" + (BASE / "FinTrackTransferTests.swift.txt").read_text(encoding="utf-8"))
 
     for name in CURRENCY_PATHS:
         file = root / name

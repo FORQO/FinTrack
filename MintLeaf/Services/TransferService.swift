@@ -12,9 +12,9 @@ enum TransferService {
         guard let dest = txn.transferDestination else { return nil }
 
         if let pairID = txn.transferPairID {
-            if let match = dest.transactions.first(where: { $0.transferPairID == pairID && $0.id != txn.id }) {
-                return match
-            }
+            // A paired transfer must never fall back to guessing its mirror:
+            // an unrelated legacy transfer may share the amount and date.
+            return dest.transactions.first(where: { $0.transferPairID == pairID && $0.id != txn.id })
         }
 
         // Legacy fallback: opposite amount, same day, pointing back at this account.
