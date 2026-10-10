@@ -181,7 +181,7 @@ def apply(root: Path):
         if "class FinTrackCBRRateReader" in src:
             return src
         if "import FoundationXML" not in src:
-            src = src.replace("import Foundation", "import Foundation\nimport FoundationXML", 1)
+            src = src.replace("import Foundation", "import Foundation\n#if canImport(FoundationXML)\nimport FoundationXML\n#endif", 1)
         before = src.index("    /// Fetches live ECB rates")
         after = src.index("    /// Get the user's preferred currency", before)
         refresh = (BASE / "CBRRefresh.swift.txt").read_text(encoding="utf-8")
@@ -195,7 +195,7 @@ def apply(root: Path):
         def test_changes(src):
             if "class FinTrackCurrencyTests" in src: return src
             if "import FoundationXML" not in src:
-                src = "import FoundationXML\n" + src
+                src = "#if canImport(FoundationXML)\nimport FoundationXML\n#endif\n" + src
             return src + "\n" + (BASE / "FinTrackCurrencyTests.swift.txt").read_text(encoding="utf-8")
         count += rewrite(tests, test_changes)
 
