@@ -112,6 +112,9 @@ final class ExchangeRateService {
             self.assertEqual(catalog['strings']['Payee']['localizations']['ru']['stringUnit']['value'],
                              'Получатель / назначение')
             self.assertIn('LOCALIZATION_REPORT_RU.md', before)
+            self.assertEqual(catalog['strings']['Accept']['localizations']['ru']['stringUnit']['value'], 'Принять')
+            self.assertEqual(catalog['strings']['Subscription']['localizations']['ru']['stringUnit']['value'], 'Подписка')
+            self.assertEqual(catalog['strings']['Locked']['localizations']['ru']['stringUnit']['value'], 'Заблокировано')
             # The sample-data generator must never reset a user preference.
             demo = (root / 'MintLeaf/Services/SampleDataGenerator.swift').read_text()
             self.assertNotIn('UserDefaults.standard.set("RUB", forKey: "defaultCurrency")', demo)
