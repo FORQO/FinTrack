@@ -56,6 +56,7 @@ jobs:
       - name: Run original and FinTrack XCTest
         working-directory: ${{ runner.temp }}/mintleaf-upstream
         run: |
+          set -o pipefail
           xcodebuild -project MintLeaf.xcodeproj \
             -scheme MintLeaf_macOS \
             -configuration Debug \
@@ -66,6 +67,7 @@ jobs:
       - name: Build native Apple Silicon app
         working-directory: ${{ runner.temp }}/mintleaf-upstream
         run: |
+          set -o pipefail
           xcodebuild -project MintLeaf.xcodeproj \
             -scheme MintLeaf_macOS \
             -configuration Release \
@@ -77,6 +79,10 @@ jobs:
         run: |
           APP="$(find "$RUNNER_TEMP/fintrack-build/Build/Products/Release" -maxdepth 1 -name '*.app' -type d -print -quit)"
           test -n "$APP"
+          BIN="$APP/Contents/MacOS/MintLeaf"
+          test -s "$BIN" || { echo "::error::Missing compiled app executable: $BIN"; exit 1; }
+          file "$BIN"
+          lipo -verify_arch arm64 "$BIN"
           mkdir -p dist/FinTrack-Mac
           ditto "$APP" 'dist/FinTrack-Mac/FinTrack Mac.app'
           cp "$RUNNER_TEMP/mintleaf-upstream/LICENSE" dist/FinTrack-Mac/LICENSE-Mint-Leaf.txt
