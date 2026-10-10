@@ -1,0 +1,26 @@
+
+@MainActor
+final class FinTrackCurrencyTests: XCTestCase {
+    func testOnlyRubUsdEurSelectable() {
+        XCTAssertEqual(SupportedCurrencies.all.map(\.code), ["RUB", "USD", "EUR"])
+    }
+
+    func testSameCurrencyIsIdentity() {
+        XCTAssertEqual(ExchangeRateService.shared.convert(Decimal(12345), from: "RUB", to: "RUB"),
+                       Decimal(12345))
+    }
+
+    func testCBRXMLCorrectlyParsesCommaAndNominal() {
+        let xml = """
+        <?xml version="1.0" encoding="utf-8"?>
+        <ValCurs><Valute><CharCode>USD</CharCode><Nominal>1</Nominal><Value>93,5000</Value></Valute>
+        <Valute><CharCode>EUR</CharCode><Nominal>10</Nominal><Value>1017,0000</Value></Valute></ValCurs>
+        """
+        let reader = FinTrackCBRRateReader()
+        let parser = XMLParser(data: Data(xml.utf8))
+        parser.delegate = reader
+        XCTAssertTrue(parser.parse())
+        XCTAssertEqual(reader.rates["USD"], 93.5)
+        XCTAssertEqual(reader.rates["EUR"], 101.7)
+    }
+}

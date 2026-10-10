@@ -1,0 +1,166 @@
+"""Reviewed additional literal UI strings in Mint Leaf 4.2."""
+EXTRA_RU = {
+    "Total Balance": "Общий баланс", "Active Accounts": "Активные счета",
+    "Drag to reorder your accounts.": "Перетащите, чтобы изменить порядок счетов.",
+    "Account Details": "Информация о счёте", "Track statement cycle": "Учитывать расчётный период",
+    "Billing Cycle": "Расчётный период", "Statement is cut on the": "Дата формирования выписки:",
+    "Payment is due on the": "Оплатить до", "Payment Schedule": "График платежей",
+    "The app totals what you spend each cycle into a statement balance and reminds you before the payment is due.":
+        "Приложение суммирует траты за расчётный период и напоминает о сроке оплаты.",
+    "The account this card is paid from. We'll warn you if its projected balance won't cover the payment when it's due.":
+        "Счёт для оплаты задолженности по карте. Мы предупредим, если прогнозируемого остатка не хватит для платежа.",
+    "Used to show overdraft usage and estimate fees before they hit. The unarranged fee is charged if you go past the arranged limit. Leave blank if you have no overdraft.":
+        "Отображает использование овердрафта и ожидаемые комиссии. Комиссия за превышение лимита применяется сверх разрешённого овердрафта. Если овердрафта нет, оставьте поле пустым.",
+    "Used to estimate interest if you don't pay the statement balance in full. Estimates only — no charges are created.":
+        "Позволяет оценить проценты при неполной оплате выписки. Это прогноз: никаких списаний не создаётся.",
+    "Analytics": "Аналитика", "Planning": "Планирование", "Tools": "Инструменты",
+    "Next 7 days": "Ближайшие 7 дней", "Balance needs attention": "Требуется проверить баланс",
+    "Paid — statement cleared": "Оплачено — долг по выписке закрыт",
+    "nothing due": "Платежей нет", "Unbilled since statement": "После последней выписки",
+    "vs prior 30d": "к прошлым 30 дням", "Drag to reorder, tap the eye to show or hide":
+        "Перетащите карточку для изменения порядка; значок глаза скрывает или показывает её.",
+    "Hidden cards won't appear on your dashboard but their data is still tracked.":
+        "Скрытые карточки не отображаются на главном экране, но данные продолжают учитываться.",
+    "Welcome to Mint Leaf": "Добро пожаловать в Mint Leaf",
+    "What You Can Do": "Возможности приложения", "Set Up Your Preferences": "Настроим приложение",
+    "How would you like to start?": "Как хотите начать?",
+    "Load Sample Data (No Tour)": "Загрузить демоданные без обучения",
+    "Import PDF Statement": "Импортировать PDF-выписку", "Import Spreadsheet": "Импортировать таблицу",
+    "Search transactions, categories, accounts...": "Поиск операций, категорий, счетов…",
+    "Search your transactions": "Найдите нужную операцию",
+    "Search by name, category, account, notes, or amount":
+        "Ищите по названию, категории, счёту, примечанию или сумме",
+    "Filter": "Фильтр", "SUB": "ПОДПИСКА", "Frequency": "Периодичность",
+    "Next Date": "Следующая дата", "An account is required for subscriptions to auto-charge":
+        "Для автоматического списания подписки нужен счёт",
+    "This looks like a subscription. Mark it as one?": "Похоже на подписку. Отметить как подписку?",
+    "View Details": "Подробнее", "Duplicate": "Дублировать",
+    "Create a budget to track your spending goals.":
+        "Создайте бюджет, чтобы контролировать расходы и достигать целей.",
+    "Uncategorized": "Без категории", "Edit Item": "Изменить позицию",
+    "Delete Item": "Удалить позицию", "This will permanently delete this budget item. This cannot be undone.":
+        "Позиция бюджета будет удалена без возможности восстановления.",
+    "Budget Amount": "Сумма бюджета", "Select": "Выбрать", "Period": "Период",
+    "Start Date": "Дата начала", "Add Goal": "Добавить цель", "Total Saved": "Всего накоплено",
+    "Mark as Purchased": "Отметить как купленное", "Mark Complete": "Отметить выполненным",
+    "Completed": "Выполнено", "Details": "Подробности", "Amount Saved": "Накопленная сумма",
+    "Set target date": "Установить дату цели", "Target": "Цель", "Link": "Ссылка",
+    "URL (optional)": "Ссылка (необязательно)", "Notes (optional)": "Примечания (необязательно)",
+    "Choose a tag to see its transactions.": "Выберите метку для просмотра операций.",
+    "New Tag": "Новая метка", "Remove Tag": "Убрать метку", "No Tags Yet": "Меток пока нет",
+    "Create Tag": "Создать метку", "Tag Name": "Название метки", "Colour": "Цвет",
+    "Monthly Spending": "Расходы по месяцам", "Income vs Expenses": "Доходы и расходы",
+    "net": "результат", "Balance Over Time": "Динамика баланса",
+    "Total Net Worth": "Общий капитал", "Net Worth Over Time": "Динамика капитала",
+    "Range": "Период", "Not enough data to show a chart yet.": "Недостаточно данных для графика.",
+    "No assets": "Активов нет", "No liabilities": "Обязательств нет",
+    "Spending by Category": "Расходы по категориям", "No expenses in this period.": "Нет расходов за этот период.",
+    "Top Merchants": "Основные получатели", "Account Activity": "Операции по счетам",
+    "Export Report as CSV": "Экспортировать отчёт в CSV",
+    "Cashflow Forecast": "Прогноз денежных потоков", "Daily Avg": "В среднем за день",
+    "Spending Alerts": "Оповещения о расходах", "No unusual spending detected this month.":
+        "Необычных расходов в этом месяце не обнаружено.",
+    "Price Changes": "Изменение цен", "Detected Subscriptions & Recurring":
+        "Найденные подписки и регулярные платежи",
+    "Balance Forecast": "Прогноз баланса", "Upcoming Scheduled": "Предстоящие операции",
+    "No scheduled transactions.": "Запланированных операций нет.",
+    "Monthly Commitment": "Обязательные платежи за месяц", "Incoming": "Поступления",
+    "Outgoing": "Списания", "Net": "Итого", "What-If Scenarios": "Сценарии «что если»",
+    "Import Bank File": "Импорт банковского файла", "Import OFX, QFX, or QIF":
+        "Импорт OFX, QFX или QIF",
+    "These are the standard formats that most banks offer when you download or export your transactions.":
+        "Это распространённые форматы выгрузки операций из банков.",
+    "Deselect All": "Снять выделение", "Import Complete": "Импорт завершён",
+    "Choose a CSV, OFX, or QIF file to import.": "Выберите CSV, OFX или QIF для импорта.",
+    "Import Transactions": "Импорт операций", "Column Mapping": "Сопоставление столбцов",
+    "Smart Import": "Умный импорт", "Date format": "Формат даты",
+    "Normalize merchant names": "Нормализовать названия получателей",
+    "Detect duplicates": "Искать дубликаты", "Choose a .xlsx spreadsheet to import transactions from.":
+        "Выберите таблицу XLSX для импорта операций.",
+    "Import Selected": "Импортировать выбранное", "Sheet:": "Лист:",
+    "Import / Export": "Импорт и экспорт", "Replace All Data": "Заменить все данные",
+    "This will permanently replace ALL current data — accounts, transactions, budgets, goals, rules and tags — with the contents of the backup file. This cannot be undone.":
+        "Все текущие счета, операции, бюджеты, цели, правила и метки будут безвозвратно заменены данными резервной копии.",
+    "Create an account first before importing transactions.":
+        "Для импорта операций сначала создайте счёт.",
+    "Import into account:": "Импортировать на счёт:",
+    "Duplicate transactions are automatically detected and skipped during import.":
+        "При импорте повторяющиеся операции обнаруживаются и пропускаются автоматически.",
+    "Export scope:": "Область экспорта:", "Scope": "Область", "Single Account": "Один счёт",
+    "Select account...": "Выберите счёт…", "CSV format with date, account, payee, amount, category, notes":
+        "CSV со столбцами: дата, счёт, получатель, сумма, категория, примечание",
+    "Export as CSV": "Экспорт в CSV", "Backup & Restore": "Копирование и восстановление",
+    "A full snapshot of everything — accounts, transactions, subscriptions, bills, goals, budgets, rules and tags — in a single file. Save one before updating the app, then restore it in one tap.":
+        "В одном файле сохраняются все счета, операции, подписки, платежи, цели, бюджеты, правила и метки. Сделайте копию перед обновлением, чтобы при необходимости восстановить данные.",
+    "Choose a bank statement PDF to parse.": "Выберите банковскую выписку в PDF.",
+    "Opening Balance": "Начальный остаток", "Closing Balance": "Конечный остаток",
+    "Set as account opening balance": "Установить начальным остатком счёта",
+    "No transactions detected": "Операции не найдены", "All transactions reconciled":
+        "Все операции сверены", "Difference": "Разница",
+    "PAUSED": "ПРИОСТАНОВЛЕНО", "No subscriptions on this day": "На эту дату подписок нет",
+    "Add Subscription": "Добавить подписку", "Current": "Текущая",
+    "e.g. Netflix": "Например, Netflix", "e.g. 9.99": "Например, 9,99",
+    "End Date": "Дата окончания", "No Account": "Без счёта", "Pay with": "Оплата со счёта",
+    "Optional notes": "Необязательное примечание", "Total Spend": "Всего потрачено",
+    "/mo": "/мес.", "By Category": "По категориям", "Most Expensive": "Самые дорогие",
+    "Subscription Stats": "Статистика подписок", "All transactions are categorized.":
+        "Все операции распределены по категориям.",
+    "Auto-Categorize All": "Автоматически распределить все", "Expense Categories": "Категории расходов",
+    "Income Categories": "Категории доходов", "Suggested": "Предложено",
+    "Shortcuts are available from the menu bar. Settings can be opened with ⌘,":
+        "Команды доступны в меню приложения. Настройки открываются сочетанием ⌘,",
+    "Search categories...": "Поиск категорий…", "Privacy & Security": "Конфиденциальность и защита",
+    "App Icon": "Значок приложения", "Choose Image...": "Выбрать изображение…",
+    "Accessibility": "Универсальный доступ", "Preview: The quick brown fox":
+        "Пример текста: Быстрая рыжая лиса", "Thicker borders and bolder text for better visibility":
+        "Более заметные границы и жирный шрифт для лучшей читаемости",
+    "Minimise animations throughout the app": "Уменьшить анимации во всём приложении",
+    "Interactive Guides": "Интерактивные инструкции", "Replay": "Повторить показ",
+    "Export All Data as CSV": "Экспортировать все данные в CSV",
+    "Reset All Data": "Удалить все данные", "Personal finance, beautifully simple.":
+        "Личные финансы — просто и удобно.",
+    "View on GitHub": "Открыть на GitHub", "Built with": "Создано с помощью",
+    "by Joe Farmer": "автор Joe Farmer", "Save & Close": "Сохранить и закрыть",
+    "Checking for updates...": "Проверка обновлений…", "Download Update": "Скачать обновление",
+    "View Release Notes": "Описание обновления", "Edit Category": "Изменить категорию",
+    "Category Name": "Название категории", "Icons": "Значки", "Search icons...": "Поиск значков…",
+    "Aliases": "Псевдонимы", "Categorized": "Распределено по категориям",
+    "Summary": "Сводка", "Category Rules": "Правила категорий", "Add Rule": "Добавить правило",
+    "Merchant Aliases": "Псевдонимы получателей", "Add Alias": "Добавить псевдоним",
+    "This will permanently delete this rule.": "Правило будет удалено безвозвратно.",
+    "This will permanently delete this alias.": "Псевдоним будет удалён безвозвратно.",
+    "Edit Rule": "Изменить правило", "Edit Alias": "Изменить псевдоним",
+    "Pattern (e.g. STARBUCKS)": "Шаблон (например, STARBUCKS)",
+    "Match Type": "Тип совпадения", "Rule Preview": "Предпросмотр правила",
+    "Raw pattern (e.g. TESCO STORES 4332)": "Исходный шаблон (например, TESCO STORES 4332)",
+    "Clean name (e.g. Tesco)": "Короткое название (например, Tesco)",
+    "Your data is stored locally": "Данные хранятся локально",
+    "Mint Leaf keeps all financial data on your device. No telemetry, no analytics, no ads.":
+        "Mint Leaf хранит финансовые данные на вашем устройстве. Без телеметрии, отслеживания и рекламы.",
+    "Security": "Безопасность", "Encryption": "Шифрование",
+    "File Protection Complete": "Полная защита файлов", "Cloud Sync": "Облачная синхронизация",
+    "iCloud (E2E encrypted)": "iCloud (сквозное шифрование)",
+    "Data Summary": "Сводка данных", "What We Don't Do": "Чего мы не делаем",
+    "No bank credentials stored": "Не сохраняем банковские пароли",
+    "No Plaid or third-party data access": "Нет доступа Plaid и других сторонних сервисов",
+    "No usage analytics or tracking": "Нет аналитики использования или отслеживания",
+    "No advertising or data selling": "Нет рекламы и продажи данных",
+    "No remote servers (local-first)": "Нет обязательного внешнего сервера",
+    "Checks": "Проверки", "Recalculate all balances": "Пересчитать все остатки",
+    "Delete orphaned transactions": "Удалить операции без счёта",
+    "No automatic backup yet — one is created on launch, once per day.":
+        "Автоматической копии пока нет. Она создаётся при первом запуске за день.",
+    "No saved backups found.": "Резервные копии не найдены.",
+    "Automatic Backups": "Автоматические резервные копии",
+    "A full snapshot is saved automatically on first launch each day. The 10 most recent are kept. Restoring replaces all current data.":
+        "Полная копия создаётся автоматически при первом запуске за день. Хранятся 10 последних копий. Восстановление заменяет текущие данные.",
+    "This permanently replaces all current data with the contents of the selected backup. This cannot be undone.":
+        "Выбранная резервная копия безвозвратно заменит все текущие данные.",
+    "All Clear": "Всё в порядке", "No alerts or upcoming items right now.":
+        "Сейчас нет предупреждений или предстоящих событий.",
+    "Urgent": "Срочно", "Info": "Информация",
+    "Dismiss All": "Скрыть все", "Restore All": "Восстановить все",
+    "Dismiss": "Скрыть", "Snooze 24h": "Отложить на 24 часа",
+    "Snooze for 24 hours": "Отложить на сутки", "Snooze for 3 days": "Отложить на 3 дня",
+    "Snooze for 1 week": "Отложить на неделю",
+}

@@ -1,0 +1,31 @@
+    /// Official Central Bank of Russia daily rates. USD and EUR are quoted in RUB.
+    /// Do not mark offline/fallback estimates as fresh exchange rates.
+    func refresh() async {
+        if let last = UserDefaults.standard.object(forKey: Self.fetchedAtKey) as? Date,
+           Calendar.current.isDateInToday(last),
+           cachedRates["RUB"] != nil, cachedRates["EUR"] != nil {
+            return
+        }
+        guard let url = URL(string: "https://www.cbr.ru/scripts/XML_daily.asp") else { return }
+        do {
+            let (data, response) = try await URLSession.shared.data(from: url)
+            guard (response as? HTTPURLResponse)?.statusCode == 200 else { return }
+            let reader = FinTrackCBRRateReader()
+            let parser = XMLParser(data: data)
+            parser.delegate = reader
+            guard parser.parse(),
+                  let dollarInRubles = reader.rates["USD"],
+                  let euroInRubles = reader.rates["EUR"],
+                  dollarInRubles > 0, euroInRubles > 0 else { return }
+            var newRates = cachedRates.mapValues { NSDecimalNumber(decimal: $0).doubleValue }
+            newRates["USD"] = 1
+            newRates["RUB"] = dollarInRubles
+            newRates["EUR"] = dollarInRubles / euroInRubles
+            UserDefaults.standard.set(newRates, forKey: Self.cacheKey)
+            UserDefaults.standard.set(Date(), forKey: Self.fetchedAtKey)
+            NotificationCenter.default.post(name: Notification.Name("FinTrackExchangeRatesUpdated"), object: nil)
+        } catch {
+            // Offline or CBR unavailable. Keep cached/fallback values and show
+            // the dashboard's stale-rate warning instead of claiming freshness.
+        }
+    }

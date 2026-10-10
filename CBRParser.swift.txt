@@ -1,0 +1,47 @@
+
+// The official CBR feed is XML; values use comma decimals and may quote more
+// than one unit of the source currency (Nominal). Both must be parsed.
+final class FinTrackCBRRateReader: NSObject, XMLParserDelegate {
+    private(set) var rates: [String: Double] = [:]
+    private var currentField: String = ""
+    private var currentCode = ""
+    private var currentNominal = ""
+    private var currentValue = ""
+    private var insideValute = false
+
+    func parser(_ parser: XMLParser, didStartElement elementName: String,
+                namespaceURI: String?, qualifiedName qName: String?,
+                attributes attributeDict: [String : String] = [:]) {
+        if elementName == "Valute" {
+            insideValute = true
+            currentCode = ""
+            currentNominal = ""
+            currentValue = ""
+        }
+        if insideValute { currentField = elementName }
+    }
+
+    func parser(_ parser: XMLParser, foundCharacters string: String) {
+        guard insideValute else { return }
+        switch currentField {
+        case "CharCode": currentCode += string
+        case "Nominal": currentNominal += string
+        case "Value": currentValue += string
+        default: break
+        }
+    }
+
+    func parser(_ parser: XMLParser, didEndElement elementName: String,
+                namespaceURI: String?, qualifiedName qName: String?) {
+        if elementName == "Valute" {
+            let amount = Double(currentValue.replacingOccurrences(of: ",", with: ".")
+                .trimmingCharacters(in: .whitespacesAndNewlines))
+            let nominal = Double(currentNominal.trimmingCharacters(in: .whitespacesAndNewlines))
+            if let amount, let nominal, amount > 0, nominal > 0 {
+                rates[currentCode.trimmingCharacters(in: .whitespacesAndNewlines)] = amount / nominal
+            }
+            insideValute = false
+        }
+        currentField = ""
+    }
+}
