@@ -220,9 +220,9 @@ def apply(root: Path):
     # reporting currency, even when the demo accounts themselves are in USD.
     count += rewrite(root / "MintLeaf/Services/SampleDataGenerator.swift",
         lambda src: re.sub(
-            r'(?m)^[ \\t]*UserDefaults\\.standard\\.set\\("(?:USD|RUB)", forKey: "defaultCurrency"\\)[ \\t]*(?:\\n|$)',
+            r'(?m)^[ \t]*UserDefaults\.standard\.set\("(?:USD|RUB)", forKey: "defaultCurrency"\)[ \t]*(?:\n|$)',
             '',
-            src.replace('        // Reset currency to match sample data\\n', '')
+            src.replace('        // Reset currency to match sample data\n', '')
         ))
 
     def app_changes(src):
