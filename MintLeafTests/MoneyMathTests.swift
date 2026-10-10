@@ -1,4 +1,6 @@
+#if canImport(FoundationXML)
 import FoundationXML
+#endif
 import XCTest
 import SwiftData
 @testable import MintLeaf
