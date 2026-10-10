@@ -1,0 +1,423 @@
+import SwiftUI
+import SwiftData
+import Charts
+
+struct TrendsView: View {
+    @Environment(\.colorScheme) private var scheme
+    @Query(sort: \Account.sortOrder) private var accounts: [Account]
+    @AppStorage("defaultCurrency") private var fintrackCurrency = "RUB"
+    private func amountInBase(_ tx: Transaction) -> Decimal {
+        ExchangeRateService.shared.convert(tx.amount,
+            from: tx.account?.currency ?? fintrackCurrency, to: fintrackCurrency)
+    }
+    private func accountBase(_ amount: Decimal, _ account: Account) -> Decimal {
+        ExchangeRateService.shared.convert(amount, from: account.currency, to: fintrackCurrency)
+    }
+
+    @State private var timeRange: TimeRange = .sixMonths
+    @State private var chartType: ChartType = .spending
+
+    enum TimeRange: String, CaseIterable, Identifiable {
+        case oneMonth = "1M"
+        case threeMonths = "3M"
+        case sixMonths = "6M"
+        case oneYear = "1Y"
+        case allTime = "All"
+
+        var id: String { rawValue }
+
+        var days: Int {
+            switch self {
+            case .oneMonth: return 30
+            case .threeMonths: return 90
+            case .sixMonths: return 180
+            case .oneYear: return 365
+            case .allTime: return 3650
+            }
+        }
+    }
+
+    enum ChartType: String, CaseIterable, Identifiable {
+        case spending = "Spending"
+        case incomeVsExpense = "Income vs Expense"
+        case balance = "Balance"
+
+        var id: String { rawValue }
+    }
+
+    private var allTransactions: [Transaction] {
+        let cutoff = Calendar.current.date(byAdding: .day, value: -timeRange.days, to: Date()) ?? Date()
+        return accounts.flatMap { $0.transactions }.filter { $0.date >= cutoff }
+    }
+
+    private var totalIncome: Decimal {
+        allTransactions.filter { $0.isIncome }.reduce(Decimal.zero) { $0 + amountInBase($1) }
+    }
+
+    private var totalExpenses: Decimal {
+        allTransactions.filter { $0.isExpense }.reduce(Decimal.zero) { $0 + abs(amountInBase($1)) }
+    }
+
+    private var netChange: Decimal {
+        totalIncome - totalExpenses
+    }
+
+    var body: some View {
+        ScrollView {
+            VStack(spacing: 16) {
+                OutlineSegmentedPicker(selection: $chartType, label: "Chart")
+                    .padding(.horizontal)
+
+                OutlineSegmentedPicker(selection: $timeRange, label: "Time Range")
+                    .padding(.horizontal)
+
+                periodSummary
+                    .padding(.horizontal)
+
+                switch chartType {
+                case .spending:
+                    spendingChart
+                case .incomeVsExpense:
+                    incomeVsExpenseChart
+                case .balance:
+                    balanceChart
+                }
+            }
+            .padding()
+        }
+        .background(AppTheme.surfaceBackground(for: scheme))
+        .navigationTitle("Trends")
+    }
+
+    private var periodSummary: some View {
+        HStack(spacing: 12) {
+            summaryCard(title: "Income", value: totalIncome, color: .green, icon: "arrow.down.circle.fill")
+            summaryCard(title: "Expenses", value: totalExpenses, color: .red, icon: "arrow.up.circle.fill")
+            summaryCard(title: "Net", value: netChange, color: netChange >= 0 ? .green : .red, icon: netChange >= 0 ? "plus.circle.fill" : "minus.circle.fill", showSign: true)
+        }
+    }
+
+    private func summaryCard(title: String, value: Decimal, color: Color, icon: String, showSign: Bool = false) -> some View {
+        VStack(spacing: 6) {
+            HStack(spacing: 4) {
+                Image(systemName: icon)
+                    .font(.caption)
+                    .foregroundStyle(color)
+                Text(title)
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+            Text((showSign && value > 0 ? "+" : "") + CurrencyFormatter.shared.format(value))
+                .font(.subheadline.bold().monospacedDigit())
+                .foregroundStyle(showSign ? color : .primary)
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, 12)
+        .background(AppTheme.cardBackground(for: scheme), in: RoundedRectangle(cornerRadius: 10))
+        .overlay(RoundedRectangle(cornerRadius: 10).strokeBorder(color.opacity(0.2), lineWidth: 1))
+    }
+
+    private struct MonthData: Identifiable {
+        let id: Date
+        let month: String
+        let income: Decimal
+        let expenses: Decimal
+        var monthDate: Date { id }
+    }
+
+    private var monthlyData: [MonthData] {
+        let cal = Calendar.current
+        let grouped = Dictionary(grouping: allTransactions) { txn -> Date in
+            let comps = cal.dateComponents([.year, .month], from: txn.date)
+            return cal.date(from: comps) ?? txn.date
+        }
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MMM yyyy"
+        return grouped.map { key, txns in
+            let income = txns.filter { $0.isIncome }.reduce(Decimal.zero) { $0 + amountInBase($1) }
+            let expenses = txns.filter { $0.isExpense }.reduce(Decimal.zero) { $0 + abs(amountInBase($1)) }
+            return MonthData(id: key, month: formatter.string(from: key), income: income, expenses: expenses)
+        }
+        .sorted { $0.monthDate < $1.monthDate }
+    }
+
+    private var spendingChart: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            HStack {
+                Text("Monthly Spending")
+                    .font(.headline)
+                Spacer()
+                if monthlyData.count > 1 {
+                    let avg = totalExpenses / Decimal(monthlyData.count)
+                    Text("Avg: \(CurrencyFormatter.shared.format(avg))/mo")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+            }
+
+            let avgValue = monthlyData.isEmpty ? 0.0 : Double(truncating: (totalExpenses / Decimal(monthlyData.count)) as NSDecimalNumber)
+
+            Chart {
+                ForEach(monthlyData) { item in
+                    let val = Double(truncating: item.expenses as NSDecimalNumber)
+                    BarMark(
+                        x: .value("Month", item.month),
+                        y: .value("Amount", min(val, avgValue))
+                    )
+                    .foregroundStyle(AppTheme.accent(for: scheme).gradient)
+                    .cornerRadius(4)
+
+                    if val > avgValue {
+                        BarMark(
+                            x: .value("Month", item.month),
+                            yStart: .value("Avg", avgValue),
+                            yEnd: .value("Amount", val)
+                        )
+                        .foregroundStyle(Color.red.opacity(0.6).gradient)
+                        .cornerRadius(4)
+                    }
+                }
+                RuleMark(y: .value("Average", avgValue))
+                    .lineStyle(StrokeStyle(lineWidth: 2, dash: [6, 4]))
+                    .foregroundStyle(.orange.opacity(0.8))
+                    .annotation(position: .top, alignment: .trailing) {
+                        Text("avg \(shortCurrency(avgValue))")
+                            .font(.caption2.bold())
+                            .foregroundStyle(.orange)
+                    }
+            }
+            .chartYAxis {
+                AxisMarks(position: .trailing) { value in
+                    AxisGridLine(stroke: StrokeStyle(lineWidth: 0.5, dash: [3]))
+                        .foregroundStyle(AppTheme.accent(for: scheme).opacity(0.1))
+                    AxisValueLabel {
+                        if let v = value.as(Double.self) {
+                            Text(shortCurrency(v))
+                                .font(.caption2)
+                                .foregroundStyle(.secondary)
+                        }
+                    }
+                }
+            }
+            .frame(height: 260)
+
+            if let highest = monthlyData.max(by: { $0.expenses < $1.expenses }),
+               let lowest = monthlyData.min(by: { $0.expenses < $1.expenses }),
+               monthlyData.count > 1 {
+                HStack {
+                    Label("Lowest: \(CurrencyFormatter.shared.format(lowest.expenses)) (\(lowest.month))", systemImage: "arrow.down")
+                        .font(.caption)
+                        .foregroundStyle(.green)
+                    Spacer()
+                    Label("Highest: \(CurrencyFormatter.shared.format(highest.expenses)) (\(highest.month))", systemImage: "arrow.up")
+                        .font(.caption)
+                        .foregroundStyle(.red)
+                }
+            }
+        }
+        .padding()
+        .background(AppTheme.cardBackground(for: scheme), in: RoundedRectangle(cornerRadius: 12))
+        .overlay(RoundedRectangle(cornerRadius: 12).strokeBorder(AppTheme.accent(for: scheme).opacity(0.12), lineWidth: 1))
+        .padding(.horizontal)
+    }
+
+    private struct IvEEntry: Identifiable {
+        let id = UUID()
+        let month: String
+        let type: String
+        let amount: Double
+    }
+
+    private var incomeVsExpenseEntries: [IvEEntry] {
+        monthlyData.flatMap { item -> [IvEEntry] in
+            [
+                IvEEntry(month: item.month, type: "Income", amount: Double(truncating: item.income as NSDecimalNumber)),
+                IvEEntry(month: item.month, type: "Expenses", amount: Double(truncating: item.expenses as NSDecimalNumber))
+            ]
+        }
+    }
+
+    private var incomeVsExpenseChart: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Text("Income vs Expenses")
+                .font(.headline)
+
+            let entries = incomeVsExpenseEntries
+
+            Chart(entries) { entry in
+                BarMark(
+                    x: .value("Month", entry.month),
+                    y: .value("Amount", entry.amount)
+                )
+                .foregroundStyle(entry.type == "Income" ? Color.green.gradient : Color.red.gradient)
+                .position(by: .value("Type", entry.type))
+                .cornerRadius(3)
+            }
+            .chartForegroundStyleScale(["Income": Color.green, "Expenses": Color.red])
+            .chartLegend(position: .top, alignment: .trailing)
+            .chartYAxis {
+                AxisMarks(position: .trailing) { value in
+                    AxisGridLine(stroke: StrokeStyle(lineWidth: 0.5, dash: [3]))
+                        .foregroundStyle(AppTheme.accent(for: scheme).opacity(0.1))
+                    AxisValueLabel {
+                        if let v = value.as(Double.self) {
+                            Text(shortCurrency(v))
+                                .font(.caption2)
+                                .foregroundStyle(.secondary)
+                        }
+                    }
+                }
+            }
+            .frame(height: 260)
+
+            Divider()
+                .padding(.vertical, 4)
+
+            if timeRange == .allTime || timeRange == .oneYear {
+                HStack {
+                    Spacer()
+                    VStack(spacing: 4) {
+                        Text(timeRange == .oneYear ? "Year to Date" : "All Time")
+                            .font(.caption2)
+                            .foregroundStyle(.secondary)
+                        Text((netChange >= 0 ? "+" : "") + CurrencyFormatter.shared.format(netChange))
+                            .font(.caption.bold().monospacedDigit())
+                            .foregroundStyle(netChange >= 0 ? .green : .red)
+                        Text("net")
+                            .font(.system(size: 9))
+                            .foregroundStyle(.tertiary)
+                    }
+                    Spacer()
+                }
+            } else {
+                HStack(spacing: 0) {
+                    ForEach(monthlyData, id: \.monthDate) { item in
+                        let net = item.income - item.expenses
+                        VStack(spacing: 2) {
+                            Text(item.month)
+                                .font(.caption2)
+                                .foregroundStyle(.secondary)
+                            Text((net >= 0 ? "+" : "") + CurrencyFormatter.shared.format(net))
+                                .font(.caption2.bold().monospacedDigit())
+                                .foregroundStyle(net >= 0 ? .green : .red)
+                            Text("net")
+                                .font(.system(size: 9))
+                                .foregroundStyle(.tertiary)
+                        }
+                        .frame(maxWidth: .infinity)
+                    }
+                }
+            }
+        }
+        .padding()
+        .background(AppTheme.cardBackground(for: scheme), in: RoundedRectangle(cornerRadius: 12))
+        .overlay(RoundedRectangle(cornerRadius: 12).strokeBorder(AppTheme.accent(for: scheme).opacity(0.12), lineWidth: 1))
+        .padding(.horizontal)
+    }
+
+    private struct BalancePoint: Identifiable {
+        let id: Date
+        let balance: Double
+    }
+
+    private var balancePoints: [BalancePoint] {
+        let sorted = allTransactions.sorted { $0.date < $1.date }
+        let initial = accounts.reduce(Decimal.zero) { $0 + accountBase($1.initialBalance, $1) }
+        var running = initial
+
+        // Aggregate by day so each date has exactly one point (the end-of-day balance).
+        // This prevents loops caused by multiple transactions on the same date.
+        let calendar = Calendar.current
+        var dayBalances: [(date: Date, balance: Double)] = []
+        for txn in sorted {
+            running += amountInBase(txn)
+            let day = calendar.startOfDay(for: txn.date)
+            let bal = Double(truncating: running as NSDecimalNumber)
+            if let last = dayBalances.last, calendar.isDate(last.date, inSameDayAs: day) {
+                dayBalances[dayBalances.count - 1] = (day, bal)
+            } else {
+                dayBalances.append((day, bal))
+            }
+        }
+        return dayBalances.map { BalancePoint(id: $0.date, balance: $0.balance) }
+    }
+
+    private var balanceChart: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            let points = balancePoints
+            let currentBalance = points.last?.balance ?? Double(truncating: accounts.reduce(Decimal.zero) { $0 + accountBase($1.initialBalance, $1) } as NSDecimalNumber)
+            let minBal = points.min(by: { $0.balance < $1.balance })
+            let maxBal = points.max(by: { $0.balance < $1.balance })
+
+            HStack(alignment: .top) {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("Balance Over Time")
+                        .font(.headline)
+                    Text("Current: \(CurrencyFormatter.shared.format(Decimal(currentBalance)))")
+                        .font(.subheadline.monospacedDigit())
+                        .foregroundStyle(AppTheme.accent(for: scheme))
+                }
+                Spacer()
+                if let minBal, let maxBal, points.count > 1 {
+                    VStack(alignment: .trailing, spacing: 2) {
+                        Label(shortCurrency(maxBal.balance), systemImage: "arrow.up")
+                            .font(.caption)
+                            .foregroundStyle(.green)
+                        Label(shortCurrency(minBal.balance), systemImage: "arrow.down")
+                            .font(.caption)
+                            .foregroundStyle(.red)
+                    }
+                }
+            }
+
+            Chart(points) { point in
+                LineMark(
+                    x: .value("Date", point.id),
+                    y: .value("Balance", point.balance)
+                )
+                .foregroundStyle(AppTheme.accent(for: scheme))
+                .lineStyle(StrokeStyle(lineWidth: 2))
+                .interpolationMethod(.monotone)
+
+                AreaMark(
+                    x: .value("Date", point.id),
+                    yStart: .value("Baseline", 0),
+                    yEnd: .value("Balance", point.balance)
+                )
+                .foregroundStyle(
+                    LinearGradient(
+                        colors: [AppTheme.accent(for: scheme).opacity(0.25), AppTheme.accent(for: scheme).opacity(0.02)],
+                        startPoint: .top,
+                        endPoint: .bottom
+                    )
+                )
+                .interpolationMethod(.monotone)
+            }
+            .chartYAxis {
+                AxisMarks(position: .trailing) { value in
+                    AxisGridLine(stroke: StrokeStyle(lineWidth: 0.5, dash: [3]))
+                        .foregroundStyle(AppTheme.accent(for: scheme).opacity(0.1))
+                    AxisValueLabel {
+                        if let v = value.as(Double.self) {
+                            Text(shortCurrency(v))
+                                .font(.caption2)
+                                .foregroundStyle(.secondary)
+                        }
+                    }
+                }
+            }
+            .frame(height: 260)
+        }
+        .padding()
+        .background(AppTheme.cardBackground(for: scheme), in: RoundedRectangle(cornerRadius: 12))
+        .overlay(RoundedRectangle(cornerRadius: 12).strokeBorder(AppTheme.accent(for: scheme).opacity(0.12), lineWidth: 1))
+        .padding(.horizontal)
+    }
+
+    private func shortCurrency(_ value: Double) -> String {
+        if abs(value) >= 1000 {
+            return String(format: "$%.0fK", value / 1000)
+        }
+        return String(format: "$%.0f", value)
+    }
+}
