@@ -219,12 +219,10 @@ def apply(root: Path):
     # Loading sample data must never override the user's explicitly selected
     # reporting currency, even when the demo accounts themselves are in USD.
     count += rewrite(root / "MintLeaf/Services/SampleDataGenerator.swift",
-        lambda src: src.replace(
-            '        // Reset currency to match sample data\n', ''
-        ).replace(
-            '        UserDefaults.standard.set("USD", forKey: "defaultCurrency")\n', ''
-        ).replace(
-            '        UserDefaults.standard.set("RUB", forKey: "defaultCurrency")\n', ''
+        lambda src: re.sub(
+            r'(?m)^[ \\t]*UserDefaults\\.standard\\.set\\("(?:USD|RUB)", forKey: "defaultCurrency"\\)[ \\t]*(?:\\n|$)',
+            '',
+            src.replace('        // Reset currency to match sample data\\n', '')
         ))
 
     def app_changes(src):
