@@ -6610,6 +6610,206 @@
           }
         }
       }
+    },
+    "Accept": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Принять"
+          }
+        }
+      }
+    },
+    "Data": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Данные"
+          }
+        }
+      }
+    },
+    "Delete Budget": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Удалить бюджет"
+          }
+        }
+      }
+    },
+    "Delete Category": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Удалить категорию"
+          }
+        }
+      }
+    },
+    "Drag to reorder": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Перетащите для изменения порядка"
+          }
+        }
+      }
+    },
+    "In shorter months this falls on the last day.": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "В коротких месяцах дата переносится на последний день месяца."
+          }
+        }
+      }
+    },
+    "Locked": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Заблокировано"
+          }
+        }
+      }
+    },
+    "Subscription": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Подписка"
+          }
+        }
+      }
+    },
+    "30d": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "30 дн."
+          }
+        }
+      }
+    },
+    "60d": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "60 дн."
+          }
+        }
+      }
+    },
+    "90d": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "90 дн."
+          }
+        }
+      }
+    },
+    "6M": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "6 мес."
+          }
+        }
+      }
+    },
+    "12/31/2026 (US)": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "31 декабря 2026 (США: 12/31/2026)"
+          }
+        }
+      }
+    },
+    "31/12/2026 (UK)": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "31 декабря 2026 (Великобритания: 31/12/2026)"
+          }
+        }
+      }
+    },
+    "2026-12-31 (ISO)": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "31 декабря 2026 (ISO: 2026-12-31)"
+          }
+        }
+      }
+    },
+    "$ USD": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "$ USD"
+          }
+        }
+      }
+    },
+    "€ EUR": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "€ EUR"
+          }
+        }
+      }
+    },
+    "₽ RUB": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "₽ RUB"
+          }
+        }
+      }
+    },
+    "Исходный проект Mint Leaf (MIT)": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Исходный проект Mint Leaf (MIT)"
+          }
+        }
+      }
+    },
+    "Сборки FinTrack Mac доступны через GitHub Actions": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Сборки FinTrack Mac доступны через GitHub Actions"
+          }
+        }
+      }
     }
   },
   "version": "1.0"
