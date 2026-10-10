@@ -112,6 +112,10 @@ final class ExchangeRateService {
             self.assertEqual(catalog['strings']['Payee']['localizations']['ru']['stringUnit']['value'],
                              'Получатель / назначение')
             self.assertIn('LOCALIZATION_REPORT_RU.md', before)
+            # The sample-data generator must never reset a user preference.
+            demo = (root / 'MintLeaf/Services/SampleDataGenerator.swift').read_text()
+            self.assertNotIn('UserDefaults.standard.set("RUB", forKey: "defaultCurrency")', demo)
+            self.assertNotIn('UserDefaults.standard.set("USD", forKey: "defaultCurrency")', demo)
 
 
 if __name__ == '__main__':
