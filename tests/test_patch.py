@@ -9,6 +9,22 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from apply_ru import apply, add_catalog_to_pbx
 from migration_store_guard import DANGEROUS_FALLBACK
+from backup_export_guard import MODELS, OLD_HELPER
+
+def fintrack_backup_fixture():
+    return (
+        'import Foundation\nimport SwiftData\n// MARK: - Backup Manager\n'
+        'enum BackupManager {\n'
+        '    static func export(context: ModelContext) throws -> Data {\n'
+        + OLD_HELPER + '\n'
+        + ''.join(f'        let {name} = fetch({model}.self)\n' for model, name in MODELS.items())
+        + '    }\n'
+        + '    static func restore(from data: Data, context: ModelContext) throws -> Summary {\n'
+        + '        let backup = try decoder.decode(MintLeafBackup.self, from: data)\n'
+        + '        try wipeAll(context: context)\n'
+        + '    }\n}\n'
+    )
+
 
 PROJECT = r'''/* Begin PBXBuildFile section */
 /* Begin PBXFileReference section */
@@ -75,6 +91,7 @@ final class ExchangeRateService {
             'MintLeaf/Views/Accounts/NewAccountSheet.swift': 'let currency = value ?? "USD"\nText(category.name)',
             'MintLeaf/Views/Transactions/ScheduledListView.swift': 'let currency = value ?? "USD"',
             'MintLeaf/Views/Transactions/SubscriptionCalendarView.swift': 'let currency = value ?? "USD"',
+            'MintLeaf/Services/BackupManager.swift': fintrack_backup_fixture(),
             'MintLeaf/Services/SampleDataGenerator.swift': 'UserDefaults.standard.set("USD", forKey: "defaultCurrency")',
             'MintLeaf/Views/Components/TransactionRow.swift': 'Text(cat.name)',
             'MintLeaf/Views/ContentView.swift': 'DashboardView(onReviewDataHealth: { selection = .dataHealth })',
@@ -123,6 +140,10 @@ final class ExchangeRateService {
             self.assertIn('FINTRACK DATA SAFETY', app_swift)
             self.assertNotIn('removeItem(at:', app_swift)
             self.assertNotIn('try? FileManager.default.copyItem', app_swift)
+            backup_src = (root / 'MintLeaf/Services/BackupManager.swift').read_text()
+            self.assertEqual(backup_src.count(' = try fetch('), 10)
+            self.assertIn('guard backup.formatVersion == 1', backup_src)
+            self.assertNotIn('(try? context.fetch(FetchDescriptor<T>())) ?? []', backup_src)
             # The sample-data generator must never reset a user preference.
             demo = (root / 'MintLeaf/Services/SampleDataGenerator.swift').read_text()
             self.assertNotIn('UserDefaults.standard.set("RUB", forKey: "defaultCurrency")', demo)
