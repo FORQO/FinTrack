@@ -11,10 +11,10 @@ private struct FinTrackFlowPoint: Identifiable {
 
 private struct FinTrackCategoryTotal: Identifiable {
     let name: String
+    let id: UUID?
     let icon: String
     let color: Color
     let amount: Decimal
-    let id: UUID?
 }
 
 struct FinTrackDashboardView: View {
