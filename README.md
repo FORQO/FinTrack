@@ -101,7 +101,7 @@ bash tests/verify_cbr_parser.sh
 
 ## Участие
 
-[Как внести вклад](CONTRIBUTING.md) · [Кодекс поведения FORQO](CODE_OF_CONDUCT.md).
+[Как внести вклад](CONTRIBUTING.md) · [Кодекс поведения FORQO](CODE_OF_CONDUCT.md) · [Безопасность](SECURITY.md).
 
 ---
 
