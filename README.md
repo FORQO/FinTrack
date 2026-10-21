@@ -1,8 +1,18 @@
-<h1 align="center">FinTrack Mac</h1>
-<p align="center"><b>Личные финансы на русском — в нативном приложении для Mac</b><br>Счета · Операции · Категории · Дашборд · RUB / USD / EUR</p>
-<p align="center"><a href="https://github.com/FORQO/FinTrack/tree/main/downloads">Загрузки</a> · <a href="https://github.com/FORQO/FinTrack/actions/workflows/build-fintrack-macos.yml">Сборки</a> · <a href="LOCALIZATION_REPORT_RU.md">Локализация</a> · <a href="https://github.com/FORQO/FinTrack/issues">Обратная связь</a></p>
+<p align="center">
+  <img src=".github/forqo-banner.svg" alt="FinTrack Mac · FORQO — Личные финансы на русском — в приложении для Mac." width="100%">
+</p>
+
+<p align="center"><b>Счета, операции, категории и дашборд в RUB, USD и EUR.</b></p>
+
+<p align="center"><a href="#быстрый-старт">Быстрый старт</a> · <a href="#возможности">Возможности</a> · <a href="#разработка">Разработка</a> · <a href="#данные-и-ограничения">Ограничения</a> · <a href="downloads/">Загрузки</a></p>
+
+| Платформа / направление | Статус | Технологии |
+| :--- | :--- | :--- |
+| macOS 14+ · Apple Silicon | В разработке · сборки для проверки | Swift · SwiftUI · SwiftData |
 
 ---
+
+## О проекте
 
 **FinTrack Mac** — русскоязычная модификация [Mint Leaf 4.2](https://github.com/Kolomaster68/mint-leaf), созданная на Swift, SwiftUI и SwiftData. Проект адаптирует интерфейс и финансовый дашборд для работы с рублями, долларами и евро.
 
@@ -19,7 +29,7 @@
 
 Базовые возможности наследуются от Mint Leaf. Изменения FinTrack находятся в патч-скриптах, шаблонах Swift и производном проекте в этом репозитории.
 
-## Установка
+## Быстрый старт
 
 **Целевая платформа:** macOS 14+ на Mac с Apple Silicon.
 
@@ -32,7 +42,7 @@
 
 Отдельный стабильный релиз пока не опубликован. macOS может предупреждать о неподписанной сборке; не отключайте Gatekeeper глобально.
 
-## Сборка из исходников
+## Разработка
 
 Требуются macOS, Git, Python 3 и полный Xcode с поддержкой Swift 6. Конфигурация проекта указывает Xcode 26.0; workflow использует Xcode из образа `macos-latest`.
 
@@ -88,3 +98,7 @@ bash tests/verify_cbr_parser.sh
 ## Происхождение и лицензия
 
 Основа — [Mint Leaf 4.2](https://github.com/Kolomaster68/mint-leaf/tree/v4.2), © 2026 Joe Farmer. FinTrack Mac — независимая русскоязычная модификация. Исходная [MIT License](LICENSE) и авторские уведомления сохранены.
+
+---
+
+<p align="center"><sub><a href="https://github.com/FORQO"><b>FORQO</b></a> · SOFTWARE ENGINEERING<br>Desktop applications · Open source · RU interfaces</sub></p>
