@@ -1,6 +1,6 @@
 <h1 align="center">FinTrack Mac</h1>
 <p align="center"><b>Личные финансы на русском — в нативном приложении для Mac</b><br>Счета · Операции · Категории · Дашборд · RUB / USD / EUR</p>
-<p align="center"><a href="https://github.com/maxliv234-star/FinTrack/tree/main/downloads">Загрузки</a> · <a href="https://github.com/maxliv234-star/FinTrack/actions/workflows/build-fintrack-macos.yml">Сборки</a> · <a href="LOCALIZATION_REPORT_RU.md">Локализация</a> · <a href="https://github.com/maxliv234-star/FinTrack/issues">Обратная связь</a></p>
+<p align="center"><a href="https://github.com/FORQO/FinTrack/tree/main/downloads">Загрузки</a> · <a href="https://github.com/FORQO/FinTrack/actions/workflows/build-fintrack-macos.yml">Сборки</a> · <a href="LOCALIZATION_REPORT_RU.md">Локализация</a> · <a href="https://github.com/FORQO/FinTrack/issues">Обратная связь</a></p>
 
 ---
 
@@ -25,10 +25,10 @@
 
 Готовые файлы текущей сборки находятся в [каталоге downloads](downloads):
 
-- [FinTrack-Mac-Apple-Silicon.dmg](https://github.com/maxliv234-star/FinTrack/raw/refs/heads/main/downloads/FinTrack-Mac-Apple-Silicon.dmg)
-- [FinTrack-Mac-Apple-Silicon.zip](https://github.com/maxliv234-star/FinTrack/raw/refs/heads/main/downloads/FinTrack-Mac-Apple-Silicon.zip)
+- [FinTrack-Mac-Apple-Silicon.dmg](https://github.com/FORQO/FinTrack/raw/refs/heads/main/downloads/FinTrack-Mac-Apple-Silicon.dmg)
+- [FinTrack-Mac-Apple-Silicon.zip](https://github.com/FORQO/FinTrack/raw/refs/heads/main/downloads/FinTrack-Mac-Apple-Silicon.zip)
 
-Альтернативный источник — [GitHub Actions](https://github.com/maxliv234-star/FinTrack/actions/workflows/build-fintrack-macos.yml): откройте успешный запуск и скачайте артефакт **FinTrack-Mac-Apple-Silicon**, если он ещё доступен. Для скачивания артефактов требуется вход в GitHub.
+Альтернативный источник — [GitHub Actions](https://github.com/FORQO/FinTrack/actions/workflows/build-fintrack-macos.yml): откройте успешный запуск и скачайте артефакт **FinTrack-Mac-Apple-Silicon**, если он ещё доступен. Для скачивания артефактов требуется вход в GitHub.
 
 Отдельный стабильный релиз пока не опубликован. macOS может предупреждать о неподписанной сборке; не отключайте Gatekeeper глобально.
 
@@ -37,7 +37,7 @@
 Требуются macOS, Git, Python 3 и полный Xcode с поддержкой Swift 6. Конфигурация проекта указывает Xcode 26.0; workflow использует Xcode из образа `macos-latest`.
 
 ```bash
-git clone https://github.com/maxliv234-star/FinTrack.git
+git clone https://github.com/FORQO/FinTrack.git
 cd FinTrack
 bash install_and_build.sh
 ```
@@ -83,7 +83,7 @@ bash tests/verify_cbr_parser.sh
 
 Для ошибки укажите версию macOS, модель Mac, номер сборки и шаги воспроизведения. Для проблем с суммами или курсами приложите небольшой искусственный пример без реальных финансовых данных.
 
-[Сообщить об ошибке или предложить улучшение](https://github.com/maxliv234-star/FinTrack/issues).
+[Сообщить об ошибке или предложить улучшение](https://github.com/FORQO/FinTrack/issues).
 
 ## Происхождение и лицензия
 
