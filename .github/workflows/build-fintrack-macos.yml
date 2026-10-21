@@ -15,8 +15,11 @@ permissions:
 
 jobs:
   macos-build:
-    runs-on: macos-latest
+    # Pin a supported image and Swift 6 toolchain; macos-latest runner capacity can stall PRs.
+    runs-on: macos-15
     timeout-minutes: 60
+    env:
+      DEVELOPER_DIR: /Applications/Xcode_26.3.app/Contents/Developer
     steps:
       - name: Checkout FinTrack patches
         uses: actions/checkout@v4
