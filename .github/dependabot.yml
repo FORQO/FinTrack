@@ -1,0 +1,25 @@
+# FORQO · Software Engineering
+# Weekly dependency version checks; updates are proposed as pull requests for review.
+version: 2
+# No Swift Package.swift / Package.resolved or Python package manifest is present.
+# The pinned Mint Leaf upstream revision is deliberately maintained separately.
+updates:
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "Europe/Moscow"
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "FORQO deps"
+      include: "scope"
+    groups:
+      forqo-minor-and-patch:
+        applies-to: "version-updates"
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
