@@ -39,6 +39,8 @@
 - [ ] Документация и примеры обновлены, если изменение их затрагивает.
 - [ ] Указаны ограничения и вопросы совместимости, если они есть.
 
+Правила участия: [CONTRIBUTING.md](https://github.com/FORQO/FinTrack/blob/main/CONTRIBUTING.md) · [CODE_OF_CONDUCT.md](https://github.com/FORQO/FinTrack/blob/main/CODE_OF_CONDUCT.md).
+
 ---
 
 <sub>FORQO · Software Engineering · [FinTrack Mac](https://github.com/FORQO/FinTrack)</sub>

@@ -99,6 +99,10 @@ bash tests/verify_cbr_parser.sh
 
 Основа — [Mint Leaf 4.2](https://github.com/Kolomaster68/mint-leaf/tree/v4.2), © 2026 Joe Farmer. FinTrack Mac — независимая русскоязычная модификация. Исходная [MIT License](LICENSE) и авторские уведомления сохранены.
 
+## Участие
+
+[Как внести вклад](CONTRIBUTING.md) · [Кодекс поведения FORQO](CODE_OF_CONDUCT.md).
+
 ---
 
 <p align="center"><sub><a href="https://github.com/FORQO"><b>FORQO</b></a> · SOFTWARE ENGINEERING<br>Desktop applications · Open source · RU interfaces</sub></p>
