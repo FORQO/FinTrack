@@ -55,7 +55,7 @@ EXTRA_RU = {
     "Range": "Период", "Not enough data to show a chart yet.": "Недостаточно данных для графика.",
     "No assets": "Активов нет", "No liabilities": "Обязательств нет",
     "Spending by Category": "Расходы по категориям", "No expenses in this period.": "Нет расходов за этот период.",
-    "Top Merchants": "Основные получатели", "Account Activity": "Операции по счетам",
+    "Top Merchants": "Популярные продавцы", "Account Activity": "Операции по счетам",
     "Export Report as CSV": "Экспортировать отчёт в CSV",
     "Cashflow Forecast": "Прогноз денежных потоков", "Daily Avg": "В среднем за день",
     "Spending Alerts": "Оповещения о расходах", "No unusual spending detected this month.":
@@ -74,7 +74,7 @@ EXTRA_RU = {
     "Choose a CSV, OFX, or QIF file to import.": "Выберите CSV, OFX или QIF для импорта.",
     "Import Transactions": "Импорт операций", "Column Mapping": "Сопоставление столбцов",
     "Smart Import": "Умный импорт", "Date format": "Формат даты",
-    "Normalize merchant names": "Нормализовать названия получателей",
+    "Normalize merchant names": "Приводить названия продавцов к единому виду",
     "Detect duplicates": "Искать дубликаты", "Choose a .xlsx spreadsheet to import transactions from.":
         "Выберите таблицу XLSX для импорта операций.",
     "Import Selected": "Импортировать выбранное", "Sheet:": "Лист:",
@@ -126,7 +126,7 @@ EXTRA_RU = {
     "Category Name": "Название категории", "Icons": "Значки", "Search icons...": "Поиск значков…",
     "Aliases": "Псевдонимы", "Categorized": "Распределено по категориям",
     "Summary": "Сводка", "Category Rules": "Правила категорий", "Add Rule": "Добавить правило",
-    "Merchant Aliases": "Псевдонимы получателей", "Add Alias": "Добавить псевдоним",
+    "Merchant Aliases": "Варианты названий продавцов", "Add Alias": "Добавить вариант названия",
     "This will permanently delete this rule.": "Правило будет удалено безвозвратно.",
     "This will permanently delete this alias.": "Псевдоним будет удалён безвозвратно.",
     "Edit Rule": "Изменить правило", "Edit Alias": "Изменить псевдоним",
