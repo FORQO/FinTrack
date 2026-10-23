@@ -111,6 +111,9 @@ final class ExchangeRateService {
             catalog = json.loads((root / 'MintLeaf/Localizable.xcstrings').read_text())
             self.assertEqual(catalog['strings']['Payee']['localizations']['ru']['stringUnit']['value'],
                              'Получатель / назначение')
+            self.assertEqual(catalog['strings']['Merchant']['localizations']['ru']['stringUnit']['value'], 'Продавец')
+            self.assertEqual(catalog['strings']['Top Merchants']['localizations']['ru']['stringUnit']['value'], 'Популярные продавцы')
+            self.assertEqual(catalog['strings']['Merchant Aliases']['localizations']['ru']['stringUnit']['value'], 'Варианты названий продавцов')
             self.assertIn('LOCALIZATION_REPORT_RU.md', before)
             self.assertEqual(catalog['strings']['Accept']['localizations']['ru']['stringUnit']['value'], 'Принять')
             self.assertEqual(catalog['strings']['Subscription']['localizations']['ru']['stringUnit']['value'], 'Подписка')
